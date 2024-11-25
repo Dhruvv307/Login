@@ -26,12 +26,12 @@ public class LandingPage extends AppCompatActivity {
 
         User currentUser = (User) getIntent().getSerializableExtra("currentUser");
 
-        TextView usernameTextView = findViewById(R.id.userNameTextView);
+        TextView usernameTextView = findViewById(R.id.usernameTextView);
         Button adminButton = findViewById(R.id.adminButton);
 
 
         if(currentUser != null){
-            usernameTextView.setText("Welcome, " + currentUser.getName() + "!");
+            usernameTextView.setText("Welcome, " + currentUser.getUsername() + "!");
         }
 
         if (currentUser.isAdmin()) {

@@ -26,8 +26,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sharedPreferences = getSharedPreferences("MiniMaroons", MODE_PRIVATE);
+   //     database = Room.databaseBuilder(getApplicationContext(),
+   //             AppDatabase.class, "mini-maroons-db").build();
+
         database = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "mini-maroons-db").build();
+                        AppDatabase.class, "mini-maroons-db")
+                .allowMainThreadQueries() // Optional: For debugging only, remove in production
+                .fallbackToDestructiveMigration()
+                .build();
 
         // Check if user is already logged in
         if (sharedPreferences.contains("logged_in_user")) {
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
 
-            UserDao userDao = database.UserDao();
+            UserDao userDao = database.userDao();
             if (userDao.getAllUsers().isEmpty()) {
                 userDao.insert(new User("testuser1", "testuser1", false));
                 userDao.insert(new User("admin2", "admin2", true));
