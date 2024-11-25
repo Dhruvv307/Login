@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Initialize database with predefined users if needed
+
         initializePredefinedUsers();
 
         Button loginButton = findViewById(R.id.btnLogin);
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         createAccountButton.setOnClickListener(v -> {
-            // Start CreateAccount activity or show dialog
+
             showCreateAccountDialog();
         });
     }
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializePredefinedUsers() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            // Add predefined users if they don't exist
+
             UserDao userDao = database.UserDao();
             if (userDao.getAllUsers().isEmpty()) {
                 userDao.insert(new User("testuser1", "testuser1", false));
@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
         executor.shutdown();
     }
     private void showCreateAccountDialog() {
-        // Implementation of create account dialog
-        // Similar to previous code but with Room database integration
+
     }
 }
 
