@@ -1,11 +1,14 @@
+// AppDatabase.java
 package com.example.login;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-public class AppDatabase {
-    @Database(entities = {User.class}, version = 1)
-    public abstract class AppDatabase extends RoomDatabase {
-        public abstract UserDao userDao();
+@Database(entities = {User.class}, version = 1, exportSchema = false)
+public abstract class AppDatabase extends RoomDatabase {
+    public abstract UserDao userDao();
+
+    public UserDao UserDao() {
+        return null;
     }
 }
