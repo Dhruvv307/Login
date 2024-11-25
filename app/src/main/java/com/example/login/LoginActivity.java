@@ -1,11 +1,13 @@
 package com.example.login;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
@@ -22,10 +24,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_main); // Changed from activity_main to activity_login
 
+        // Allow main thread queries (for demonstration - not recommended for production)
         database = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "mini-maroons-db").build();
+                        AppDatabase.class, "mini-maroons-db")
+                .allowMainThreadQueries() // Add this for testing
+                .fallbackToDestructiveMigration() // Add this to handle migrations
+                .build();
+
         sharedPreferences = getSharedPreferences("MiniMaroons", MODE_PRIVATE);
 
         usernameInput = findViewById(R.id.etUsername);
@@ -48,7 +55,8 @@ public class LoginActivity extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
-            User user = database.UserDao().login(username, password);
+            // Changed from UserDao() to userDao()
+            User user = database.userDao().login(username, password);
 
             handler.post(() -> {
                 if (user != null) {
@@ -72,5 +80,4 @@ public class LoginActivity extends AppCompatActivity {
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
-
 }
