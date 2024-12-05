@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -7,23 +8,26 @@
     android:gravity="center">
 
     <TextView
+        android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to App"
+        android:text="Welcome"
         android:textSize="24sp"
         android:layout_marginBottom="32dp"/>
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnAdmin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Admin Area"
+        android:visibility="invisible"
+        tools:visibility="visible"
         android:layout_marginBottom="16dp"/>
 
     <Button
-        android:id="@+id/btnCreateAccount"
+        android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Account"/>
+        android:text="Logout"/>
 
 </LinearLayout>

@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Changed from activity_main to activity_login
+        setContentView(R.layout.activity_login_page); // Changed from activity_main to activity_login
 
         // Allow main thread queries (for demonstration - not recommended for production)
         database = Room.databaseBuilder(getApplicationContext(),
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
 
                     // Navigate to landing page
-                    startActivity(new Intent(LoginActivity.this, LandingPage.class));
+                    startActivity(new Intent(LoginActivity.this, LandingActivity.class));
                     finish();
                 } else {
                     showMessage("Invalid username or password");
