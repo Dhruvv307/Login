@@ -29,11 +29,7 @@ public class MainActivity extends AppCompatActivity {
    //     database = Room.databaseBuilder(getApplicationContext(),
    //             AppDatabase.class, "mini-maroons-db").build();
 
-        database = Room.databaseBuilder(getApplicationContext(),
-                        AppDatabase.class, "mini-maroons-db")
-                .allowMainThreadQueries() // Optional: For debugging only, remove in production
-                .fallbackToDestructiveMigration()
-                .build();
+        database = AppDatabase.getInstance(this);
 
         // Check if user is already logged in
         if (sharedPreferences.contains("logged_in_user")) {
@@ -45,17 +41,19 @@ public class MainActivity extends AppCompatActivity {
 
         initializePredefinedUsers();
 
-        Button loginButton = findViewById(R.id.btnLogin);
-        Button createAccountButton = findViewById(R.id.btnCreateAccount);
+ //       Button loginButton = findViewById(R.id.btnLogin);
+ //       Button createAccountButton = findViewById(R.id.btnCreateAccount);
 
-        loginButton.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        });
+ //       loginButton.setOnClickListener(v -> {
+  //          startActivity(new Intent(MainActivity.this, LoginActivity.class));
+  //      });
 
-        createAccountButton.setOnClickListener(v -> {
+   //     createAccountButton.setOnClickListener(v -> {
 
-            showCreateAccountDialog();
-        });
+    //        showCreateAccountDialog();
+    //    });
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     private void initializePredefinedUsers() {
@@ -70,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         });
         executor.shutdown();
     }
-    private void showCreateAccountDialog() {
+  //  private void showCreateAccountDialog() {
 
-    }
+ //   }
 }
 

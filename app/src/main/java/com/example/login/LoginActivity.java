@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,22 +25,20 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Changed from activity_main to activity_login
+        setContentView(R.layout.activity_login); // Changed from activity_main to activity_login
 
         // Allow main thread queries (for demonstration - not recommended for production)
-        database = Room.databaseBuilder(getApplicationContext(),
-                        AppDatabase.class, "mini-maroons-db")
-                .allowMainThreadQueries() // Add this for testing
-                .fallbackToDestructiveMigration() // Add this to handle migrations
-                .build();
+        database = AppDatabase.getInstance(this);
 
         sharedPreferences = getSharedPreferences("MiniMaroons", MODE_PRIVATE);
 
         usernameInput = findViewById(R.id.etUsername);
         passwordInput = findViewById(R.id.etPassword);
         Button loginButton = findViewById(R.id.btnLogin);
+         Button createAccountButton = findViewById(R.id.btnCreateAccount);
 
         loginButton.setOnClickListener(v -> handleLogin());
+         createAccountButton.setOnClickListener(v -> showCreateAccountDialog());
     }
 
     private void handleLogin() {
@@ -67,7 +66,10 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
 
                     // Navigate to landing page
-                    startActivity(new Intent(LoginActivity.this, LandingPage.class));
+                    Intent intent = new Intent(LoginActivity.this, LandingPage.class);
+                    intent.putExtra("currentUser", user);
+                    startActivity(intent);
+                    //startActivity(new Intent(LoginActivity.this, LandingPage.class));
                     finish();
                 } else {
                     showMessage("Invalid username or password");
@@ -77,6 +79,9 @@ public class LoginActivity extends AppCompatActivity {
         executor.shutdown();
     }
 
+    private void showCreateAccountDialog(){
+        //Should save info in text boxes to database
+    }
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
