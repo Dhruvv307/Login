@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("MiniMaroons", MODE_PRIVATE);
         database = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "mini-maroons-db").build();
+                AppDatabase.class, "mini-maroons-db").fallbackToDestructiveMigration().build();
 
         // Check if user is already logged in
         if (sharedPreferences.contains("logged_in_user")) {

@@ -5,9 +5,11 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.room.RoomDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,22 +26,24 @@ public class SudokuActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
 
-    Button saveButton = findViewById(R.id.btnSave);
-    saveButton.setOnClickListener(v -> {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            Sudoku sudoku = ;
-            int[][] board = sudoku.getBoard();
-            boolean[][] fixedCells = sudoku.getFixedCells();
+        Button saveButton = findViewById(R.id.btnSave);
 
-            SudokuPuzzle puzzle = new SudokuPuzzle();
-            puzzle.setBoard(SudokuPuzzle.toJson(board));
-            puzzle.setFixedCells(SudokuPuzzle.toJson(fixedCells));
-            puzzle.setSolved(false);
+        saveButton.setOnClickListener(v -> {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> {
+                Sudoku sudoku = new Sudoku();
+                int[][] board = sudoku.getBoard();
+                boolean[][] fixedCells = sudoku.getFixedCells();
 
-            database.sudokuPuzzleDao().insertPuzzle(puzzle);
+                SudokuPuzzle puzzle = new SudokuPuzzle();
+                puzzle.setBoard(SudokuPuzzle.toJson(board));
+                puzzle.setFixedCells(SudokuPuzzle.toJson(fixedCells));
+                puzzle.setSolved(false);
+
+                AppDatabase database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "mini-maroons-db").fallbackToDestructiveMigration().setJournalMode(RoomDatabase.JournalMode.TRUNCATE).build();
+                database.sudokuPuzzleDao().insertPuzzle(puzzle);
+            });
         });
-    });
+    }
 }

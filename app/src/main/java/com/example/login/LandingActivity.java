@@ -9,6 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LandingActivity extends AppCompatActivity {
         private SharedPreferences sharedPreferences;
@@ -27,6 +32,7 @@ public class LandingActivity extends AppCompatActivity {
             welcomeText = findViewById(R.id.tvWelcome);
             adminButton = findViewById(R.id.btnAdmin);
             Button logoutButton = findViewById(R.id.btnLogout);
+            loadButton = findViewById(R.id.btnLoad);
 
             String username = sharedPreferences.getString("logged_in_user", "");
             boolean isAdmin = sharedPreferences.getBoolean("is_admin", false);
@@ -42,6 +48,22 @@ public class LandingActivity extends AppCompatActivity {
             });
 
             logoutButton.setOnClickListener(v -> handleLogout());
+
+            loadButton.setOnClickListener(v -> {
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(() -> {
+
+                    AppDatabase database = Room.databaseBuilder(getApplicationContext(),
+                            AppDatabase.class, "mini-maroons-db").fallbackToDestructiveMigration().setJournalMode(RoomDatabase.JournalMode.TRUNCATE).build();
+                    SudokuPuzzle savedPuzzle = database.sudokuPuzzleDao().getPuzzleById(1);
+                    int[][] board = SudokuPuzzle.fromJson(savedPuzzle.getBoard());
+                    boolean[][] fixedCells = SudokuPuzzle.fromJsonFixedCells(savedPuzzle.getFixedCells());
+
+                    SudokuPuzzle puzzle = new SudokuPuzzle();
+                    puzzle.setBoard(SudokuPuzzle.toJson(board));
+                    puzzle.setFixedCells(SudokuPuzzle.toJson(fixedCells));
+                });
+            });
         }
 
         private void handleLogout() {
@@ -58,16 +80,5 @@ public class LandingActivity extends AppCompatActivity {
         private void showMessage(String message) {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
-
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    executor.execute(() -> {
-        SudokuPuzzle savedPuzzle = database.sudokuPuzzleDao().getPuzzleById(1);
-        int[][] board = SudokuPuzzle.fromJson(savedPuzzle.getBoard());
-        boolean[][] fixedCells = SudokuPuzzle.fromJsonFixedCells(savedPuzzle.getFixedCells());
-
-        Sudoku sudoku = new Sudoku();
-        sudoku.setBoard(board);
-        sudoku.setFixedCells(fixedCells);
-    });
 
 }

@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import com.google.gson.Gson;
 
-@Entity(tableName = "sudoku_puzzle")
+@Entity(tableName = "sudoku_puzzles")
 public class SudokuPuzzle {
     @PrimaryKey(autoGenerate = true)
     private int id;

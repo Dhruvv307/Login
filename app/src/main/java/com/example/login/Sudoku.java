@@ -149,4 +149,8 @@ public class Sudoku {
         }
         return false;
     }
+
+    public boolean[][] getFixedCells() {
+        return fixedCells;
+    }
 }
