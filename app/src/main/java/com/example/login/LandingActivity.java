@@ -15,6 +15,8 @@ public class LandingActivity extends AppCompatActivity {
         private Button adminButton;
         private TextView welcomeText;
 
+        private Button loadButton;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -56,5 +58,16 @@ public class LandingActivity extends AppCompatActivity {
         private void showMessage(String message) {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
+
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    executor.execute(() -> {
+        SudokuPuzzle savedPuzzle = database.sudokuPuzzleDao().getPuzzleById(1);
+        int[][] board = SudokuPuzzle.fromJson(savedPuzzle.getBoard());
+        boolean[][] fixedCells = SudokuPuzzle.fromJsonFixedCells(savedPuzzle.getFixedCells());
+
+        Sudoku sudoku = new Sudoku();
+        sudoku.setBoard(board);
+        sudoku.setFixedCells(fixedCells);
+    });
 
 }
