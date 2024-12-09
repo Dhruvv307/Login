@@ -49,7 +49,7 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void handleLogout() {
-        // Clear shared preferences
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
