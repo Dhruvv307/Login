@@ -63,12 +63,19 @@ public class LandingActivity extends AppCompatActivity {
                     AppDatabase database = Room.databaseBuilder(getApplicationContext(),
                             AppDatabase.class, "mini-maroons-db").fallbackToDestructiveMigration().setJournalMode(RoomDatabase.JournalMode.TRUNCATE).build();
                     SudokuPuzzle savedPuzzle = database.sudokuPuzzleDao().getPuzzleById(1);
+                    if(savedPuzzle == null){
+                        runOnUiThread(() -> Toast.makeText(this, "No saved puzzle found.", Toast.LENGTH_SHORT).show());
+                        return;
+                    }
+
                     int[][] board = SudokuPuzzle.fromJson(savedPuzzle.getBoard());
                     boolean[][] fixedCells = SudokuPuzzle.fromJsonFixedCells(savedPuzzle.getFixedCells());
 
-                    SudokuPuzzle puzzle = new SudokuPuzzle();
-                    puzzle.setBoard(SudokuPuzzle.toJson(board));
-                    puzzle.setFixedCells(SudokuPuzzle.toJson(fixedCells));
+                    Intent intent = new Intent(LandingActivity.this, SudokuActivity.class);
+                    intent.putExtra("board", board);
+                    intent.putExtra("fixedCells", fixedCells);
+                    startActivity(intent);
+                    finish();
                 });
             });
         }

@@ -1,5 +1,6 @@
 package com.example.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -36,8 +37,21 @@ public class SudokuActivity extends AppCompatActivity {
         });
 
         Button saveButton = findViewById(R.id.btnSave);
+        Button quitButton = findViewById(R.id.btnQuit);
+        Button solveButton = findViewById(R.id.btnSolve);
         GridLayout gridLayout = findViewById(R.id.sudokuGrid);
         Sudoku sudoku = new Sudoku();
+
+        Intent intent = getIntent();
+        if(intent.hasExtra("board") && intent.hasExtra("fixedCells")){
+            sudoku = new Sudoku();
+            int[][] board = (int[][]) intent.getSerializableExtra("board");
+            boolean[][] fixedCells = (boolean[][]) intent.getSerializableExtra("fixedCells");
+
+            sudoku.setBoard(board);
+            sudoku.setFixedCells(fixedCells);
+        }
+
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -55,25 +69,15 @@ public class SudokuActivity extends AppCompatActivity {
                 gridLayout.addView(cell);
             }
         }
-        saveButton.setOnClickListener(v -> {
-            for (int row = 0; row < 9; row++) {
-                for (int col = 0; col < 9; col++) {
-                    EditText cell = (EditText) gridLayout.findViewWithTag(row + "," + col);
-                    String text = cell.getText().toString();
-                    if (!text.isEmpty()) {
-                        int num = Integer.parseInt(text);
-                        if (!sudoku.setNumber(row, col, num)) {
-                            cell.setError("Invalid number");
-                        }
-                    }
-                }
-            }
 
+        populateGrid(gridLayout, sudoku);
+        Sudoku finalSudoku = sudoku;
+        saveButton.setOnClickListener(v -> {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.execute(() -> {
             //    Sudoku sudoku = new Sudoku();
-                int[][] board = sudoku.getBoard();
-                boolean[][] fixedCells = sudoku.getFixedCells();
+                int[][] board = finalSudoku.getBoard();
+                boolean[][] fixedCells = finalSudoku.getFixedCells();
 
                 SudokuPuzzle puzzle = new SudokuPuzzle();
                 puzzle.setBoard(SudokuPuzzle.toJson(board));
@@ -87,44 +91,73 @@ public class SudokuActivity extends AppCompatActivity {
 
 
 
+
+        quitButton.setOnClickListener(v -> {
+            startActivity(new Intent(SudokuActivity.this, LandingActivity.class));
+            finish();
+        });
+
+        Sudoku finalSudoku1 = sudoku;
+        solveButton.setOnClickListener(v -> {
+            boolean isValid = true;
+            boolean[][] fixedCells = finalSudoku1.getFixedCells();
+
+            for (int row = 0; row < 9; row++) {
+                for (int col = 0; col < 9; col++) {
+                    EditText cell = (EditText) gridLayout.findViewWithTag(row + "," + col);
+
+                    if (!fixedCells[row][col]) {
+                        String text = cell.getText().toString();
+                        if (!text.isEmpty()) {
+                            try {
+                                int num = Integer.parseInt(text);
+
+                                if (!finalSudoku1.isSafe(row, col, num)) {
+                                    isValid = false;
+                                    cell.setError("Invalid number");
+                                } else {
+                                    cell.setError(null);
+                                }
+                            } catch (NumberFormatException e) {
+                                isValid = false;
+                                cell.setError("Enter a valid number");
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (isValid) {
+                Log.d("SudokuActivity", "Puzzle is valid.");
+            } else {
+                Log.d("SudokuActivity", "Puzzle contains invalid entries.");
+            }
+        });
+
+    }
+
+    private void populateGrid(GridLayout gridlayout, Sudoku sudoku){
         int[][] board = sudoku.getBoard();
         boolean[][] fixedCells = sudoku.getFixedCells();
 
-      //  int[][] board = sudoku.getBoard();
-     //   boolean[][] fixedCells = sudoku.getFixedCells();
+        //  int[][] board = sudoku.getBoard();
+        //   boolean[][] fixedCells = sudoku.getFixedCells();
         Log.d("SudokuActivity", "Board: " + Arrays.deepToString(board));
         Log.d("SudokuActivity", "Fixed Cells: " + Arrays.deepToString(fixedCells));
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                EditText cell = (EditText) gridLayout.findViewWithTag(row + "," + col);
+                EditText cell = (EditText) gridlayout.findViewWithTag(row + "," + col);
                 cell.setBackgroundResource(R.drawable.cell_border);
                 int finalRow = row;
                 int finalCol = col;
-                cell.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    }
+                int finalRow1 = row;
+                int finalCol1 = col;
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if(!s.toString().isEmpty()){
-                            int num = Integer.parseInt(s.toString());
-                            if(!sudoku.isSafe(finalRow, finalCol, num)){
-                                cell.setError("Invalid number");
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
                 if (fixedCells[row][col]) {
-                    cell.setText(String.valueOf(board[row][col])); // Pre-fill fixed numbers
-                    cell.setEnabled(false); // Disable editing for fixed cells
+                    cell.setText(String.valueOf(board[row][col]));
+                    cell.setEnabled(false);
                 } else {
                     cell.setText("");
                     cell.setEnabled(true);

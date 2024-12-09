@@ -170,4 +170,12 @@ public class Sudoku {
     public boolean[][] getFixedCells() {
         return fixedCells;
     }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
+    }
+
+    public void setFixedCells(boolean[][] fixedCells) {
+        this.fixedCells = fixedCells;
+    }
 }

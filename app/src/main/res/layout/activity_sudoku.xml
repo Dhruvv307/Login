@@ -1,30 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".SudokuActivity">
+
+<!-- Sudoku Grid -->
+<GridLayout
+    android:id="@+id/sudokuGrid"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_margin="16dp"
+    android:columnCount="9"
+    android:rowCount="9"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/btnSolve"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+<!-- Solve Button -->
+<Button
+    android:id="@+id/btnSolve"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SudokuActivity">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:text="Solve"
+    app:layout_constraintBottom_toTopOf="@+id/btnSave"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+<!-- Save Button -->
+<Button
+    android:id="@+id/btnSave"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:text="Save"
+    app:layout_constraintBottom_toTopOf="@+id/btnQuit"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
-    <GridLayout
-        android:id="@+id/sudokuGrid"
-        android:layout_width="match_parent"
-        android:layout_height="700dp"
-        android:layout_margin="16dp"
-        android:columnCount="9"
-        android:rowCount="9"
-        app:layout_constraintBottom_toTopOf="@+id/btnSave"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!-- Quit Button -->
+<Button
+    android:id="@+id/btnQuit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:text="Main Menu"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
