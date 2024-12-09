@@ -6,10 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SudokuActivity">
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save"
-        android:layout_marginBottom="16dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <GridLayout
+        android:id="@+id/sudokuGrid"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:layout_margin="16dp"
+        android:columnCount="9"
+        android:rowCount="9"
+        app:layout_constraintBottom_toTopOf="@+id/btnSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

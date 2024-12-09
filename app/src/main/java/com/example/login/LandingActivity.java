@@ -19,8 +19,9 @@ public class LandingActivity extends AppCompatActivity {
         private SharedPreferences sharedPreferences;
         private Button adminButton;
         private TextView welcomeText;
-
+        private Button playButton;
         private Button loadButton;
+        private Button logoutButton;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +32,9 @@ public class LandingActivity extends AppCompatActivity {
 
             welcomeText = findViewById(R.id.tvWelcome);
             adminButton = findViewById(R.id.btnAdmin);
-            Button logoutButton = findViewById(R.id.btnLogout);
+            logoutButton = findViewById(R.id.btnLogout);
             loadButton = findViewById(R.id.btnLoad);
+            playButton = findViewById(R.id.btnPlay);
 
             String username = sharedPreferences.getString("logged_in_user", "");
             boolean isAdmin = sharedPreferences.getBoolean("is_admin", false);
@@ -45,6 +47,11 @@ public class LandingActivity extends AppCompatActivity {
             adminButton.setOnClickListener(v -> {
                 // Handle admin functionality
                 showMessage("Accessing admin area");
+            });
+
+            playButton.setOnClickListener(v -> {
+                startActivity(new Intent(LandingActivity.this, SudokuActivity.class));
+                finish();
             });
 
             logoutButton.setOnClickListener(v -> handleLogout());

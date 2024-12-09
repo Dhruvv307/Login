@@ -16,6 +16,16 @@ public class Sudoku {
         fillDiagonalBoxes();
         solvePuzzle(0, 0);
         removeCellsForPuzzle(40);
+        logBoardState();
+    }
+
+    private void logBoardState() {
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                System.out.print(board[row][col] + " ");
+            }
+            System.out.println();
+        }
     }
 
     private void clearBoard() {
