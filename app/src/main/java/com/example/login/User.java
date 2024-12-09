@@ -1,24 +1,43 @@
 package com.example.login;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
+import androidx.room.Ignore;
 import java.util.Objects;
 
-@Entity(tableName = "users")
-public class User {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String username;
-    private String password;
-    private boolean isAdmin;
+    @Entity(tableName = "users")
+    public class User {
+        @PrimaryKey(autoGenerate = true)
+        private int id;
+
+        @ColumnInfo(name = "username")
+        private String username;
+
+        @ColumnInfo(name = "password")
+        private String password;
+
+        @ColumnInfo(name = "is_admin")
+        private boolean isAdmin;
+
+
+        public User() {
+    }
+
+    @Ignore
+    public User(int id) {
+        this.id = id;
+    }
+
+    @Ignore
+    public User(String username, String password, boolean isAdmin) {
+        this.username = username;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
 
     public int getId() {
         return id;
-    }
-
-    public User(int id) {
-        this.id = id;
     }
 
     public void setId(int id) {
@@ -54,20 +73,13 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && isAdmin == user.isAdmin && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return id == user.id && isAdmin == user.isAdmin &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, isAdmin);
-    }
-
-    public User(String username, String password, boolean isAdmin) {
-        this.username = username;
-        this.password = password;
-        this.isAdmin = isAdmin;
-    }
-    public User() {
-        // Required by Room
     }
 }
