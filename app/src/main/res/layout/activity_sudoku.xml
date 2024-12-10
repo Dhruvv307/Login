@@ -7,7 +7,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".SudokuActivity">
 
-<!-- Sudoku Grid -->
+
 <GridLayout
     android:id="@+id/sudokuGrid"
     android:layout_width="0dp"
@@ -20,7 +20,7 @@ tools:context=".SudokuActivity">
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent" />
 
-<!-- Solve Button -->
+
 <Button
     android:id="@+id/btnSolve"
     android:layout_width="match_parent"
@@ -31,7 +31,7 @@ tools:context=".SudokuActivity">
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent" />
 
-<!-- Save Button -->
+
 <Button
     android:id="@+id/btnSave"
     android:layout_width="match_parent"
@@ -42,7 +42,6 @@ tools:context=".SudokuActivity">
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent" />
 
-<!-- Quit Button -->
 <Button
     android:id="@+id/btnQuit"
     android:layout_width="match_parent"
