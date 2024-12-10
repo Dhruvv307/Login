@@ -5,10 +5,11 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {User.class, SudokuPuzzle.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, SudokuPuzzle.class, HighScore.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract SudokuPuzzleDao sudokuPuzzleDao();
+    public abstract HighScoreDao highScoreDao();
 
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
@@ -19,6 +20,19 @@ public abstract class AppDatabase extends RoomDatabase {
                     "`board` TEXT, " +
                     "`fixed_cells` TEXT, " +
                     "`solved` INTEGER NOT NULL)");
+
+
+            database.execSQL("CREATE TABLE IF NOT EXISTS `high_scores` " +
+                    "(`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "`userId` TEXT NOT NULL, " +
+                    "`score` INTEGER NOT NULL, " +
+                    "`difficulty` TEXT, " +
+                    "`completionTime` INTEGER NOT NULL, " +
+                    "`dateAchieved` TEXT)");
+
+
+            database.execSQL("CREATE INDEX IF NOT EXISTS `index_high_scores_userId` " +
+                    "ON `high_scores` (`userId`)");
         }
     };
 }
