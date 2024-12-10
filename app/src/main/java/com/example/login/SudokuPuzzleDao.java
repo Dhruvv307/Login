@@ -21,6 +21,7 @@ public interface SudokuPuzzleDao {
     @Delete
     void deletePuzzle(SudokuPuzzle puzzle);
 
-    @Query("UPDATE sudoku_puzzles SET isSolved = :isSolved WHERE id = :id")
-    void updateSolvedStatus(int id, boolean isSolved);
+    @Query("DELETE FROM sudoku_puzzles")
+    void clearAllPuzzles();
+
 }
