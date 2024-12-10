@@ -1,68 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="16dp"
+android:gravity="center"
+    android:background="@drawable/login_background">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Create New Account"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    android:layout_marginBottom="32dp"/>
+
+<EditText
+    android:id="@+id/etNewUsername"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
+    android:layout_height="wrap_content"
+    android:hint="Username"
+    android:inputType="text"
+    android:padding="12dp"
+    android:layout_marginBottom="16dp"
+    android:background="@android:drawable/edit_text"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create New Account"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="32dp"/>
+<EditText
+    android:id="@+id/etNewPassword"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Password"
+    android:inputType="textPassword"
+    android:padding="12dp"
+    android:layout_marginBottom="16dp"
+    android:background="@android:drawable/edit_text"/>
 
-    <EditText
-        android:id="@+id/etNewUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Username"
-        android:inputType="text"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:drawable/edit_text"/>
+<EditText
+    android:id="@+id/etConfirmPassword"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Confirm Password"
+    android:inputType="textPassword"
+    android:padding="12dp"
+    android:layout_marginBottom="24dp"
+    android:background="@android:drawable/edit_text"/>
 
-    <EditText
-        android:id="@+id/etNewPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp"
-        android:background="@android:drawable/edit_text"/>
+<CheckBox
+    android:id="@+id/checkBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="ADMIN" />
 
-    <EditText
-        android:id="@+id/etConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Confirm Password"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:layout_marginBottom="24dp"
-        android:background="@android:drawable/edit_text"/>
+<Button
+    android:id="@+id/btnCreateAccount"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Create Account"
+    android:padding="12dp"
+    android:layout_marginBottom="16dp"/>
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ADMIN" />
-
-    <Button
-        android:id="@+id/btnCreateAccount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Create Account"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/btnBackToLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back to Login"
-        android:padding="12dp"/>
+<Button
+    android:id="@+id/btnBackToLogin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Back to Login"
+    android:padding="12dp"/>
 
 </LinearLayout>
+
