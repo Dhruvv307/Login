@@ -64,8 +64,3 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
         }
 }
-
-    private void showCreateAccountDialog() {
-        startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
-    }
-}
