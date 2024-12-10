@@ -17,25 +17,38 @@
         android:layout_marginBottom="32dp"/>
 
     <Button
-        android:id="@+id/btnPlaySudoku"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Play Sudoku"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
         android:id="@+id/btnAdmin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="Admin Area"
         android:visibility="invisible"
-        tools:visibility="visible"
-        android:layout_marginBottom="16dp"/>
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play" />
+
+    <Button
+        android:id="@+id/btnLoad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Load Puzzle"/>
 
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"/>
+        android:text="Logout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSudokuPuzzles"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
 
 </LinearLayout>
+

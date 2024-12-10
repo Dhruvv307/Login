@@ -6,22 +6,22 @@ import androidx.room.PrimaryKey;
 import androidx.room.Ignore;
 import java.util.Objects;
 
-    @Entity(tableName = "users")
-    public class User {
-        @PrimaryKey(autoGenerate = true)
-        private int id;
+@Entity(tableName = "users")
+public class User {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
-        @ColumnInfo(name = "username")
-        private String username;
+    @ColumnInfo(name = "username")
+    private String username;
 
-        @ColumnInfo(name = "password")
-        private String password;
+    @ColumnInfo(name = "password")
+    private String password;
 
-        @ColumnInfo(name = "is_admin")
-        private boolean isAdmin;
+    @ColumnInfo(name = "is_admin")
+    private boolean isAdmin;
 
 
-        public User() {
+    public User() {
     }
 
     @Ignore
@@ -83,3 +83,5 @@ import java.util.Objects;
         return Objects.hash(id, username, password, isAdmin);
     }
 }
+
+

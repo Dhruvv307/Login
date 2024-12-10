@@ -25,9 +25,8 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("MiniMaroons", MODE_PRIVATE);
 
         database = Room.databaseBuilder(getApplicationContext(),
-                        AppDatabase.class, "mini-maroons-db")
-                .fallbackToDestructiveMigration()
-                .build();
+                AppDatabase.class, "mini-maroons-db").fallbackToDestructiveMigration().build();
+
 
         if (sharedPreferences.contains("logged_in_user")) {
             startActivity(new Intent(this, LandingActivity.class));
@@ -61,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
         });
         executor.shutdown();
     }
-
-    private void showCreateAccountDialog() {
-        startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
-    }
+        private void showCreateAccountDialog() {
+            startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
+        }
 }
