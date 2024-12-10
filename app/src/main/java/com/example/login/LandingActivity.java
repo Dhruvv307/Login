@@ -48,6 +48,8 @@ public class LandingActivity extends AppCompatActivity {
 
             adminButton.setOnClickListener(v -> {
                 showMessage("Accessing admin area");
+                startActivity(new Intent(LandingActivity.this, AdminStuff.class));
+                finish();
             });
 
             playButton.setOnClickListener(v -> {
