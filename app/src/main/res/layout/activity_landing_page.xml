@@ -17,6 +17,13 @@
         android:layout_marginBottom="32dp"/>
 
     <Button
+        android:id="@+id/btnPlaySudoku"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play Sudoku"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
         android:id="@+id/btnAdmin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

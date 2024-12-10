@@ -24,13 +24,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_page); // Changed from activity_main to activity_login
+        setContentView(R.layout.activity_login_page);
 
-        // Allow main thread queries (for demonstration - not recommended for production)
         database = Room.databaseBuilder(getApplicationContext(),
                         AppDatabase.class, "mini-maroons-db")
-                .allowMainThreadQueries() // Add this for testing
-                .fallbackToDestructiveMigration() // Add this to handle migrations
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build();
 
         sharedPreferences = getSharedPreferences("MiniMaroons", MODE_PRIVATE);
@@ -38,9 +37,15 @@ public class LoginActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.etUsername);
         passwordInput = findViewById(R.id.etPassword);
         Button loginButton = findViewById(R.id.btnLogin);
+        Button createAccountButton = findViewById(R.id.btnGoToCreateAccount); // Add this line
 
         loginButton.setOnClickListener(v -> handleLogin());
+        // Add this line
+        createAccountButton.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class));
+        });
     }
+
 
     private void handleLogin() {
         String username = usernameInput.getText().toString();
@@ -73,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
         });
         executor.shutdown();
     }
+
+
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

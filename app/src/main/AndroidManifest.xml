@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Login"
         tools:targetApi="31">
+
         <activity
             android:name=".CreateAccountActivity"
             android:exported="false" />
@@ -23,12 +24,21 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".LandingActivity" />
+        <activity
+            android:name=".CreateAccountActivity"
+            android:exported="false"/>
+
+        <!-- Added Sudoku Activity -->
+        <activity
+            android:name=".SudokuActivity"
+            android:label="Sudoku Game"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".LandingActivity" />
     </application>
 
 </manifest>
