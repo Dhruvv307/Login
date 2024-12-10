@@ -1,136 +1,168 @@
 package com.example.login;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.GridLayout;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.gridlayout.widget.GridLayout;
+import androidx.room.Room;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.room.RoomDatabase;
+
+import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SudokuActivity extends AppCompatActivity {
-    private SudokuCell[][] cells = new SudokuCell[9][9];
-    private Button[] numberButtons = new Button[9];
-    private Button clearButton;
-    private Button newGameButton;
-    private Button checkButton;
-    private SudokuGame game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sudoku);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        game = new SudokuGame();
-        initializeGrid();
-        initializeNumberPad();
-        initializeButtons();
-        startNewGame();
-    }
+        Button saveButton = findViewById(R.id.btnSave);
+        Button quitButton = findViewById(R.id.btnQuit);
+        Button solveButton = findViewById(R.id.btnSolve);
+        GridLayout gridLayout = findViewById(R.id.sudokuGrid);
+        Sudoku sudoku = new Sudoku();
 
-    private void initializeGrid() {
-        GridLayout gridLayout = findViewById(R.id.sudoku_grid);
+        Intent intent = getIntent();
+        if(intent.hasExtra("board") && intent.hasExtra("fixedCells")){
+            sudoku = new Sudoku();
+            int[][] board = (int[][]) intent.getSerializableExtra("board");
+            boolean[][] fixedCells = (boolean[][]) intent.getSerializableExtra("fixedCells");
+
+            sudoku.setBoard(board);
+            sudoku.setFixedCells(fixedCells);
+        }
+
+
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                SudokuCell cell = new SudokuCell(this);
-                cell.setTextSize(20);
-                cell.setPadding(8, 8, 8, 8);
-                cell.setBackgroundResource(R.drawable.sudoku_cell_selected_background);
-
+                EditText cell = new EditText(this);
+                cell.setInputType(InputType.TYPE_CLASS_NUMBER);
+                cell.setGravity(Gravity.CENTER);
+                cell.setTextSize(18);
+                cell.setTag(row + "," + col);
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.width = 0;
-                params.height = 0;
                 params.rowSpec = GridLayout.spec(row, 1f);
                 params.columnSpec = GridLayout.spec(col, 1f);
-                params.setMargins(2, 2, 2, 2);
-
+                params.width = 0;
+                params.height = 0;
                 cell.setLayoutParams(params);
-                cells[row][col] = cell;
                 gridLayout.addView(cell);
-
-                final int finalRow = row;
-                final int finalCol = col;
-                cell.setOnClickListener(v -> onCellClick(finalRow, finalCol));
             }
         }
+
+        populateGrid(gridLayout, sudoku);
+        Sudoku finalSudoku = sudoku;
+        saveButton.setOnClickListener(v -> {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> {
+                //    Sudoku sudoku = new Sudoku();
+                int[][] board = finalSudoku.getBoard();
+                boolean[][] fixedCells = finalSudoku.getFixedCells();
+
+                SudokuPuzzle puzzle = new SudokuPuzzle();
+                puzzle.setBoard(SudokuPuzzle.toJson(board));
+                puzzle.setFixedCells(SudokuPuzzle.toJson(fixedCells));
+                puzzle.setSolved(false);
+
+                AppDatabase database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "mini-maroons-db").fallbackToDestructiveMigration().setJournalMode(RoomDatabase.JournalMode.TRUNCATE).build();
+                database.sudokuPuzzleDao().insertPuzzle(puzzle);
+            });
+        });
+
+
+
+
+        quitButton.setOnClickListener(v -> {
+            startActivity(new Intent(SudokuActivity.this, LandingActivity.class));
+            finish();
+        });
+
+        Sudoku finalSudoku1 = sudoku;
+        solveButton.setOnClickListener(v -> {
+            boolean isValid = true;
+            boolean[][] fixedCells = finalSudoku1.getFixedCells();
+
+            for (int row = 0; row < 9; row++) {
+                for (int col = 0; col < 9; col++) {
+                    EditText cell = (EditText) gridLayout.findViewWithTag(row + "," + col);
+
+                    if (!fixedCells[row][col]) {
+                        String text = cell.getText().toString();
+                        if (!text.isEmpty()) {
+                            try {
+                                int num = Integer.parseInt(text);
+
+                                if (!finalSudoku1.isSafe(row, col, num)) {
+                                    isValid = false;
+                                    cell.setError("Invalid number");
+                                } else {
+                                    cell.setError(null);
+                                }
+                            } catch (NumberFormatException e) {
+                                isValid = false;
+                                cell.setError("Enter a valid number");
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (isValid) {
+                Log.d("SudokuActivity", "Puzzle is valid.");
+            } else {
+                Log.d("SudokuActivity", "Puzzle contains invalid entries.");
+            }
+        });
+
     }
 
-    private void initializeNumberPad() {
-        GridLayout numberPad = findViewById(R.id.number_pad);
-        for (int i = 0; i < 9; i++) {
-            Button button = new Button(this);
-            button.setText(String.valueOf(i + 1));
-            button.setTextSize(18);
-            button.setBackgroundResource(R.drawable.number_button_background);
+    private void populateGrid(GridLayout gridlayout, Sudoku sudoku){
+        int[][] board = sudoku.getBoard();
+        boolean[][] fixedCells = sudoku.getFixedCells();
 
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = 0;
-            params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            params.columnSpec = GridLayout.spec(i % 3, 1f);
-            params.rowSpec = GridLayout.spec(i / 3, 1f);
-            params.setMargins(4, 4, 4, 4);
+        //  int[][] board = sudoku.getBoard();
+        //   boolean[][] fixedCells = sudoku.getFixedCells();
+        Log.d("SudokuActivity", "Board: " + Arrays.deepToString(board));
+        Log.d("SudokuActivity", "Fixed Cells: " + Arrays.deepToString(fixedCells));
 
-            button.setLayoutParams(params);
-            numberButtons[i] = button;
-            numberPad.addView(button);
-
-            final int number = i + 1;
-            button.setOnClickListener(v -> onNumberClick(number));
-        }
-    }
-
-    private void initializeButtons() {
-        clearButton = findViewById(R.id.clear_button);
-        newGameButton = findViewById(R.id.new_game_button);
-        checkButton = findViewById(R.id.check_button);
-
-        clearButton.setOnClickListener(v -> clearSelectedCell());
-        newGameButton.setOnClickListener(v -> startNewGame());
-        checkButton.setOnClickListener(v -> checkSolution());
-    }
-
-    private void startNewGame() {
-        game.generateNewPuzzle();
-        updateUI();
-    }
-
-    private void updateUI() {
-        int[][] puzzle = game.getPuzzle();
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                cells[row][col].setValue(puzzle[row][col]);
-                cells[row][col].setLocked(puzzle[row][col] != 0);
+                EditText cell = (EditText) gridlayout.findViewWithTag(row + "," + col);
+                cell.setBackgroundResource(R.drawable.cell_border);
+                int finalRow = row;
+                int finalCol = col;
+
+                int finalRow1 = row;
+                int finalCol1 = col;
+
+                if (fixedCells[row][col]) {
+                    cell.setText(String.valueOf(board[row][col]));
+                    cell.setEnabled(false);
+                } else {
+                    cell.setText("");
+                    cell.setEnabled(true);
+                }
             }
-        }
-    }
-
-    private SudokuCell selectedCell = null;
-
-    private void onCellClick(int row, int col) {
-        if (selectedCell != null) {
-            selectedCell.setSelected(false);
-        }
-        selectedCell = cells[row][col];
-        selectedCell.setSelected(true);
-    }
-
-    private void onNumberClick(int number) {
-        if (selectedCell != null && !selectedCell.isLocked()) {
-            selectedCell.setValue(number);
-            game.setNumber(number);
-        }
-    }
-
-    private void clearSelectedCell() {
-        if (selectedCell != null && !selectedCell.isLocked()    ) {
-            selectedCell.setValue(0);
-        }
-    }
-
-    private void checkSolution() {
-        if (game.isSolved()) {
-            Toast.makeText(this, "Congratulations! Puzzle solved!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Not quite right, keep trying!", Toast.LENGTH_SHORT).show();
         }
     }
 }
