@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.etUsername);
         passwordInput = findViewById(R.id.etPassword);
         Button loginButton = findViewById(R.id.btnLogin);
-        Button createAccountButton = findViewById(R.id.btnGoToCreateAccount); // Add this line
+        Button createAccountButton = findViewById(R.id.btnGoToCreateAccount);
 
         loginButton.setOnClickListener(v -> handleLogin());
 
