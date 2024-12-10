@@ -32,7 +32,6 @@ public class SudokuPuzzleAdapter extends RecyclerView.Adapter<SudokuPuzzleAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SudokuPuzzle puzzle = puzzles.get(position);
         holder.tvPuzzleId.setText("ID: " + puzzle.getId());
-        holder.tvPuzzleStatus.setText(puzzle.isSolved() ? "Solved" : "Unsolved");
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SudokuActivity.class);
@@ -48,7 +47,7 @@ public class SudokuPuzzleAdapter extends RecyclerView.Adapter<SudokuPuzzleAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvPuzzleId, tvPuzzleStatus;
+        TextView tvPuzzleId;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
