@@ -10,6 +10,7 @@ public class HighScore {
     private int id;
 
     private String userId;
+    private int score;
     private String difficulty;
     private long completionTime;
     private String dateAchieved;
