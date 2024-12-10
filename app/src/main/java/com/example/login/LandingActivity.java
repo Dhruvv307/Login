@@ -9,9 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,6 +48,8 @@ public class LandingActivity extends AppCompatActivity {
 
             adminButton.setOnClickListener(v -> {
                 showMessage("Accessing admin area");
+                startActivity(new Intent(LandingActivity.this, AdminStuff.class));
+                finish();
             });
 
             playButton.setOnClickListener(v -> {
@@ -60,20 +65,20 @@ public class LandingActivity extends AppCompatActivity {
 
                     AppDatabase database = Room.databaseBuilder(getApplicationContext(),
                             AppDatabase.class, "mini-maroons-db").fallbackToDestructiveMigration().setJournalMode(RoomDatabase.JournalMode.TRUNCATE).build();
-                    SudokuPuzzle savedPuzzle = database.sudokuPuzzleDao().getPuzzleById(1);
-                    if(savedPuzzle == null){
-                        runOnUiThread(() -> Toast.makeText(this, "No saved puzzle found.", Toast.LENGTH_SHORT).show());
-                        return;
-                    }
+                    //SudokuPuzzle savedPuzzle = database.sudokuPuzzleDao().getPuzzleById(1);
+                    List<SudokuPuzzle> puzzles = database.sudokuPuzzleDao().getAllPuzzles();
 
-                    int[][] board = SudokuPuzzle.fromJson(savedPuzzle.getBoard());
-                    boolean[][] fixedCells = SudokuPuzzle.fromJsonFixedCells(savedPuzzle.getFixedCells());
+                    runOnUiThread(() -> {
+                        if (puzzles.isEmpty()) {
+                            Toast.makeText(this, "No saved puzzles found.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            RecyclerView recyclerView = findViewById(R.id.rvSudokuPuzzles);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                            recyclerView.setAdapter(new SudokuPuzzleAdapter(this, puzzles));
+                        }
+                    });
 
-                    Intent intent = new Intent(LandingActivity.this, SudokuActivity.class);
-                    intent.putExtra("board", board);
-                    intent.putExtra("fixedCells", fixedCells);
-                    startActivity(intent);
-                    finish();
                 });
             });
         }
