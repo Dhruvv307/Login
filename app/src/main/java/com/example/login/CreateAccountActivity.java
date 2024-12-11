@@ -25,13 +25,13 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
-        // Initialize database
+
         database = Room.databaseBuilder(getApplicationContext(),
                         AppDatabase.class, "mini-maroons-db")
                 .fallbackToDestructiveMigration()
                 .build();
 
-        // Initialize UI elements
+
         usernameInput = findViewById(R.id.etNewUsername);
         passwordInput = findViewById(R.id.etNewPassword);
         confirmPasswordInput = findViewById(R.id.etConfirmPassword);
@@ -51,7 +51,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         String confirmPassword = confirmPasswordInput.getText().toString().trim();
         boolean isAdmin = adminCheckBox.isChecked();
 
-        // Validation
+
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             showMessage("Please fill in all fields");
             return;
@@ -72,17 +72,17 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         executor.execute(() -> {
             try {
-                // Check for existing user in background thread
+
                 User existingUser = database.userDao().getUserByUsername(username);
 
                 if (existingUser != null) {
                     handler.post(() -> showMessage("Username already exists"));
                 } else {
-                    // Create and insert new user in background thread
+
                     User newUser = new User(username, password, isAdmin);
                     database.userDao().insert(newUser);
 
-                    // Post success message and navigate on main thread
+
                     handler.post(() -> {
                         showMessage("Account created successfully");
                         navigateToLogin();
@@ -97,7 +97,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
-        // Clear the back stack so users can't go back to create account screen
+
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

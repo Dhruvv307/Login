@@ -9,9 +9,11 @@ public class SudokuPuzzle {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String board; // Store the board as a JSON or comma-separated string
-    private String fixedCells; // Store fixed cells as a JSON or comma-separated string
-    private boolean isSolved; // Optional: track if the puzzle is solved
+
+    private String board;
+    private String fixedCells;
+    private boolean isSolved;
+
 
     // Getters and Setters
     public int getId() {
@@ -65,4 +67,6 @@ public class SudokuPuzzle {
         Gson gson = new Gson();
         return gson.fromJson(json, boolean[][].class);
     }
+
 }
+

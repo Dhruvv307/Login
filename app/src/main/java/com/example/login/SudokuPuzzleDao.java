@@ -24,3 +24,4 @@ public interface SudokuPuzzleDao {
     @Query("UPDATE sudoku_puzzles SET isSolved = :isSolved WHERE id = :id")
     void updateSolvedStatus(int id, boolean isSolved);
 }
+

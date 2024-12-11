@@ -75,7 +75,7 @@ public class SudokuActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.execute(() -> {
-            //    Sudoku sudoku = new Sudoku();
+                //    Sudoku sudoku = new Sudoku();
                 int[][] board = finalSudoku.getBoard();
                 boolean[][] fixedCells = finalSudoku.getFixedCells();
 
@@ -166,4 +166,3 @@ public class SudokuActivity extends AppCompatActivity {
         }
     }
 }
-

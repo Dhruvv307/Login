@@ -18,12 +18,18 @@ android:gravity="center"
 <EditText
     android:id="@+id/etNewUsername"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@drawable/login_background"
     android:layout_height="wrap_content"
     android:hint="Username"
     android:inputType="text"
     android:padding="12dp"
     android:layout_marginBottom="16dp"
     android:background="@android:drawable/edit_text"/>
+
 
 <EditText
     android:id="@+id/etNewPassword"
