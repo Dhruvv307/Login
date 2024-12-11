@@ -38,6 +38,12 @@
         android:text="Load Puzzle"/>
 
     <Button
+        android:id="@+id/btnHighScores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="High Scores" />
+
+    <Button
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
