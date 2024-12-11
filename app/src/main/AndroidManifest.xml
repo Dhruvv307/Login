@@ -29,9 +29,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".LandingActivity" />
+        <activity
+            android:name=".HighScoresActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

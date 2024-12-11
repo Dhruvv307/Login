@@ -56,6 +56,11 @@ public class LandingActivity extends AppCompatActivity {
                 startActivity(new Intent(LandingActivity.this, SudokuActivity.class));
                 finish();
             });
+        Button btnHighScores = findViewById(R.id.btnHighScores);
+
+        btnHighScores.setOnClickListener(v -> {
+            startActivity(new Intent(LandingActivity.this, HighScoresActivity.class));
+        });
 
             logoutButton.setOnClickListener(v -> handleLogout());
 

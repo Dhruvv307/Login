@@ -46,12 +46,10 @@ public class SudokuGame {
     }
 
     private void createPuzzleFromSolution() {
-        // Copy solution to puzzle
         for (int i = 0; i < 9; i++) {
             System.arraycopy(solution[i], 0, puzzle[i], 0, 9);
         }
 
-        // Remove some numbers (adjust difficulty by changing number of cells to remove)
         int cellsToRemove = 40; // Medium difficulty
         while (cellsToRemove > 0) {
             int row = random.nextInt(9);
@@ -70,21 +68,19 @@ public class SudokuGame {
             HashSet<Integer> boxSet = new HashSet<>();
 
             for (int eachChar = 0; eachChar < board[0].length; eachChar++) {
-                // Check horizontal
+
                 if (board[eachSubArray][eachChar] != 0) {
                     if (!horizontalSet.add(board[eachSubArray][eachChar])) {
                         return false;
                     }
                 }
 
-                // Check vertical
                 if (board[eachChar][eachSubArray] != 0) {
                     if (!verticalSet.add(board[eachChar][eachSubArray])) {
                         return false;
                     }
                 }
 
-                // Check 3x3 box
                 int rowIndex = 3 * (eachSubArray / 3);
                 int colIndex = 3 * (eachSubArray % 3);
                 int boxValue = board[rowIndex + eachChar / 3][colIndex + eachChar % 3];
@@ -99,10 +95,9 @@ public class SudokuGame {
     }
 
     private boolean isValid(int[][] board, int row, int col, int num) {
-        // Temporarily place the number
         board[row][col] = num;
         boolean valid = isValidBoard(board);
-        // Remove the number if it was invalid
+
         if (!valid) {
             board[row][col] = 0;
         }

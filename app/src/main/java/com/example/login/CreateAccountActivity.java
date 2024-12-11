@@ -72,17 +72,16 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         executor.execute(() -> {
             try {
-                // Check for existing user in background thread
+
                 User existingUser = database.userDao().getUserByUsername(username);
 
                 if (existingUser != null) {
                     handler.post(() -> showMessage("Username already exists"));
                 } else {
-                    // Create and insert new user in background thread
+
                     User newUser = new User(username, password, isAdmin);
                     database.userDao().insert(newUser);
 
-                    // Post success message and navigate on main thread
                     handler.post(() -> {
                         showMessage("Account created successfully");
                         navigateToLogin();
@@ -97,7 +96,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
-        // Clear the back stack so users can't go back to create account screen
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
