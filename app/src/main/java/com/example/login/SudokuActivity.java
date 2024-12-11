@@ -140,7 +140,7 @@ public class SudokuActivity extends AppCompatActivity {
         int[][] board = sudoku.getBoard();
         boolean[][] fixedCells = sudoku.getFixedCells();
 
-        //  int[][] board = sudoku.getBoard();
+
         //   boolean[][] fixedCells = sudoku.getFixedCells();
         Log.d("SudokuActivity", "Board: " + Arrays.deepToString(board));
         Log.d("SudokuActivity", "Fixed Cells: " + Arrays.deepToString(fixedCells));

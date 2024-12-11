@@ -25,13 +25,13 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
-        // Initialize database
+
         database = Room.databaseBuilder(getApplicationContext(),
                         AppDatabase.class, "mini-maroons-db")
                 .fallbackToDestructiveMigration()
                 .build();
 
-        // Initialize UI elements
+
         usernameInput = findViewById(R.id.etNewUsername);
         passwordInput = findViewById(R.id.etNewPassword);
         confirmPasswordInput = findViewById(R.id.etConfirmPassword);
@@ -51,7 +51,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         String confirmPassword = confirmPasswordInput.getText().toString().trim();
         boolean isAdmin = adminCheckBox.isChecked();
 
-        // Validation
+
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             showMessage("Please fill in all fields");
             return;
